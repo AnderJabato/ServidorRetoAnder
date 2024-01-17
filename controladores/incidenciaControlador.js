@@ -1,13 +1,9 @@
 const express = require('express');
 const axios = require('axios');
 
-const app = express();
-const port = 3000;
-
-app.use(express.json());
 
 // Ruta para obtener incidencias de la API de Open Data (GET)
-router.get('/incidencias', async (req, res) => {
+const obtenerIncedencias = async () => {
   try {
     // Realizar una solicitud GET a la API de Open Data
     const response = await axios.get('https://api.euskadi.eus/traffic/v1.0/incidences?_page=1');
@@ -27,7 +23,8 @@ router.get('/incidencias', async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Error en la solicitud a la API de Open Data' });
   }
-});
+}
+
 const crearIncidencia = async (req, res) => {
   try {
     // Obtén los datos de la nueva incidencia desde el cuerpo de la solicitud
@@ -50,13 +47,13 @@ const crearIncidencia = async (req, res) => {
 
 
 // Ruta para crear una nueva incidencia (POST)
-const crearAlerta =  async (req, res) => {
+const usuarioCrearAlerta = async (req, res) => {
   try {
     // Obtén los datos de la nueva incidencia desde el cuerpo de la solicitud
     const nuevaIncidencia = req.body;
 
     // crear una nueva incidencia en la base de datos
-    //QUERY
+    //QUERY post
 
     // Verificar si la solicitud fue exitosa
     if (response.status === 201) {
@@ -119,8 +116,10 @@ const borrarIncidencia = async (req, res) => {
   }
 };
 
-
-// Iniciar el servidor
-router.listen(port, () => {
-  console.log(`Servidor Express escuchando en el puerto ${port}`);
-});
+module.exports = {
+  obtenerIncedencias,
+  usuarioCrearAlerta,
+  crearIncidencia,
+  editarIncidencia,
+  borrarIncidencia
+}

@@ -3,7 +3,7 @@ const app = express()
 const port = 3000
 const router = require('./rutas/rutas')
 require('dotenv').config()
-//const connection = require('./config/bbdd')
+const connection = require('./config/bbdd')
 
 app.use(express.json());
 

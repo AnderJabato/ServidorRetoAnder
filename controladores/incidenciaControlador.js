@@ -3,18 +3,18 @@ const axios = require('axios');
 
 
 // Ruta para obtener incidencias de la API de Open Data (GET)
-const obtenerIncedencias = async () => {
+const obtenerIncedencias = async (req, res) => {
   try {
     // Realizar una solicitud GET a la API de Open Data
-    const response = await axios.get('https://api.euskadi.eus/traffic/v1.0/incidences?_page=1');
+    const data = await axios.get('https://api.euskadi.eus/traffic/v1.0/incidences?_page=1');
     //mapear los  20 incidencias de open data y conparar con los de mi base de datos. Si hay distintos las ultimas las añade.
     // Verificar si la solicitud fue exitosa
-    if (response.status === 200) {
+    if (data.status === 200) {
       // Obtener los datos de la respuesta
-      const data = response.data;
+      const incidencias = data.data;
 
       // Devolver los datos como respuesta de tu servidor
-      res.status(200).json({ data });
+      res.status(200).json({ incidencias });
     } else {
       // Manejar otros códigos de estado si es necesario
       res.status(response.status).json({ message: 'Error al obtener datos de la API de Open Data' });
@@ -31,7 +31,7 @@ const crearIncidencia = async (req, res) => {
     const nuevaIncidencia = req.body;
 
     // Realiza la inserción en la base de datos
-    const query = 'INSERT INTO incidencias (campo1, campo2, campo3) VALUES (?, ?, ?)';
+    const query = 'INSERT INTO incidencias (ciudad, provincia, fechaInicio) VALUES (?, ?, ?)';
     const values = [nuevaIncidencia.campo1, nuevaIncidencia.campo2, nuevaIncidencia.campo3];
 
     // Ejecuta la consulta

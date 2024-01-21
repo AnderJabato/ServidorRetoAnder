@@ -5,6 +5,7 @@ const router = require('./rutas/rutas')
 require('dotenv').config()
 const connection = require('./config/bbdd')
 
+// Configuraciones básicas
 app.use(express.json());
 
 app.use('/api', router)

@@ -1,6 +1,4 @@
-const express = require('express');
 const axios = require('axios');
-
 
 // Ruta para obtener incidencias de la API de Open Data (GET)
 const obtenerIncedencias = async (req, res) => {

@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 // Ruta para obtener incidencias de la API de Open Data (GET)
-const obtenerIncedencias = async (req, res) => {
+const obtenerIncidencias = async (req, res) => {
   try {
     // Realizar una solicitud GET a la API de Open Data
     const data = await axios.get('https://api.euskadi.eus/traffic/v1.0/incidences?_page=1');
@@ -23,14 +23,71 @@ const obtenerIncedencias = async (req, res) => {
   }
 }
 
+const obtenerIncidencia = async (req, res) => {
+  try {
+    // Obtén el idIncidencia del registro que quieres obtener
+    const { idIncidencia } = req.params;
+
+    // Realiza la consulta en la base de datos
+    const query = `
+    SELECT * FROM Incidencias
+    WHERE idIncidencia = ?
+`;
+
+    // Ejecuta la consulta
+    const [result] = await pool.query(query, [idIncidencia]);
+
+    // Verifica si se encontró la incidencia
+    if (result.length > 0) {
+      res.status(200).json(result[0]);
+    } else {
+      res.status(404).json({ message: 'Incidencia no encontrada' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener la incidencia de la base de datos' });
+  }
+};
+
+
 const crearIncidencia = async (req, res) => {
   try {
     // Obtén los datos de la nueva incidencia desde el cuerpo de la solicitud
     const nuevaIncidencia = req.body;
 
     // Realiza la inserción en la base de datos
-    const query = 'INSERT INTO incidencias (ciudad, provincia, fechaInicio) VALUES (?, ?, ?)';
-    const values = [nuevaIncidencia.campo1, nuevaIncidencia.campo2, nuevaIncidencia.campo3];
+    const query = `
+    INSERT INTO Incidencias (
+        idIncidencia, nombreIncidencia, tipoIncidencia, causa, descripcionIncidencia,
+        fechaInicio, fechaFin, regionAutonoma, provincia, ciudad,
+        direccion, carretera, registroVehiculo, idFuente, nivelIncidencia,
+        latitud, longitud, pkInicio, pkFin, incidenciaValidada, foto
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`;
+
+    const values = [
+        nuevaIncidencia.idIncidencia,
+        nuevaIncidencia.nombreIncidencia,
+        nuevaIncidencia.tipoIncidencia,
+        nuevaIncidencia.causa,
+        nuevaIncidencia.descripcionIncidencia,
+        nuevaIncidencia.fechaInicio,
+        nuevaIncidencia.fechaFin,
+        nuevaIncidencia.regionAutonoma,
+        nuevaIncidencia.provincia,
+        nuevaIncidencia.ciudad,
+        nuevaIncidencia.direccion,
+        nuevaIncidencia.carretera,
+        nuevaIncidencia.registroVehiculo,
+        nuevaIncidencia.idFuente,
+        nuevaIncidencia.nivelIncidencia,
+        nuevaIncidencia.latitud,
+        nuevaIncidencia.longitud,
+        nuevaIncidencia.pkInicio,
+        nuevaIncidencia.pkFin,
+        nuevaIncidencia.incidenciaValidada, 
+        nuevaIncidencia.foto
+    ];
 
     // Ejecuta la consulta
     const result = await pool.query(query, values);
@@ -44,31 +101,9 @@ const crearIncidencia = async (req, res) => {
 };
 
 
-// Ruta para crear una nueva incidencia (POST)
-const usuarioCrearAlerta = async (req, res) => {
-  try {
-    // Obtén los datos de la nueva incidencia desde el cuerpo de la solicitud
-    const nuevaIncidencia = req.body;
 
-    // crear una nueva incidencia en la base de datos
-    //QUERY post
 
-    // Verificar si la solicitud fue exitosa
-    if (response.status === 201) {
-      // Obtener los datos de la incidencia creada desde la respuesta
-      const incidenciaCreada = response.data;
 
-      // Devolver los datos de la incidencia creada como respuesta de tu servidor
-      res.status(201).json({ incidencia: incidenciaCreada });
-    } else {
-      // Manejar otros códigos de estado si es necesario
-      res.status(response.status).json({ message: 'Error al crear la incidencia en el servidor' });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error en la solicitud al servidor' });
-  }
-};
 
 const editarIncidencia = async (req, res) => {
   try {
@@ -115,8 +150,8 @@ const borrarIncidencia = async (req, res) => {
 };
 
 module.exports = {
-  obtenerIncedencias,
-  usuarioCrearAlerta,
+  obtenerIncidencias,
+  obtenerIncidencia,
   crearIncidencia,
   editarIncidencia,
   borrarIncidencia

@@ -46,6 +46,11 @@ const obtenerUsuario = (req, res) => {
 const crearUsuario = (req, res) => {
   const data = req.body
 
+  /*
+  INSERT INTO Usuario (idUsuario, contraseña) 
+  VALUES ('jordi@gmail.com', '11111111');
+  */
+
   // Metemos la nueva info en bbdd
   const query = `INSERT INTO Usuario SET ?`
   connection.query(query, data, (err, result) => {
@@ -66,9 +71,15 @@ const actualizarDatoUsuario = (req, res) => {
   const { email } = req.params
   const data = req.body
 
+  // Parsear el objeto data para pasarlo como query MySQL
+  const camposParaActualizar = Object.keys(data).map(campo => `${campo} = ?`).join(', ');
+
   // Conectar y editar en la bbdd
-  const query = `UPDATE Usuario SET ${data} WHERE idUsuario = '${email}'`
-  connection.query(query, (err, result) => {
+  const query = `UPDATE Usuario SET ${camposParaActualizar} WHERE idUsuario = ?;`
+  const values = [...Object.values(data), email]
+
+
+  connection.query(query, values, (err, result) => {
     if (err) {
       console.log(err)
       res.status(500).json({

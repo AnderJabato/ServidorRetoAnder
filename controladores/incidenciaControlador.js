@@ -6,6 +6,8 @@ const connection = require('../config/bbdd')
 // Ruta para obtener incidencias de la API de Open Data (GET)
 const obtenerIncidencias = async (req, res) => {
   try {
+
+    
     // Realizar una solicitud GET a la API de Open Data
     const data = await axios.get(process.env.API_EUSKALGIDA);
     //mapear los  20 incidencias de open data y conparar con los de mi base de datos. Si hay distintos las ultimas las añade.
@@ -84,6 +86,16 @@ const crearIncidencia = async (req, res) => {
 `;
 
   /* 
+
+  o Meteorológica
+o Accidente
+o Retención
+o Seguridad vial
+o Otras incidencias
+o Puertos de montaña
+o Vialidad invernal tramos
+o Pruebas deportivas
+
   INSERT INTO Incidencia
   VALUES
     (3, 'Corte de energía', 'Corte de energía', 'Falla en la subestación eléctrica',

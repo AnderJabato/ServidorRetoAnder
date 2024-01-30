@@ -9,6 +9,9 @@ const { obtenerCamaras } = require('../controladores/camarasControlador');
 router.get('/incidencias', obtenerIncidencias);//obtiene las 20 incidencias mas recientes de la base de datos
 router.get('/camaras', obtenerCamaras);//obtiene camaras(por definir)
 
+
+
+
 //***** API Euskalgida <---> Android/Electron ****
 router.get('/usuarios', obtenerUsuarios); //obtienen usuario creado
 router.get('/usuarios/:email', obtenerUsuario); //obtiene un usuario  por su id
@@ -23,6 +26,8 @@ router.get('/incidencia/:idIncidencia', obtenerIncidenciaIndividual);//obtiene l
 router.post('/incidencia', crearIncidencia);//crear una nueva incidencia 
 router.put('/incidencia/:idIncidencia', editarIncidencia);//edita una incidencia ya validada
 router.delete('/incidencia/:idIncidencia', borrarIncidencia);//borrar incidencia 
+
+
 
 
 module.exports = router

@@ -112,7 +112,7 @@ const eliminarUsuario = (req, res) => {
     })
   })
 }
-
+//Siempre exportar
 module.exports = {
   obtenerUsuarios,
   obtenerUsuario,

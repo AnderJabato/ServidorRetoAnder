@@ -20,6 +20,8 @@ const obtenerCamaras = async (req, res) => {
   }
 };
 
+
+//Exportar
 module.exports = {
   obtenerCamaras
 }

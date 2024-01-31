@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { obtenerIncidencias, obtenerIncidencia, crearIncidencia, editarIncidencia, borrarIncidencia, obtenerIncidenciaIndividual } = require('../controladores/incidenciaControlador');
+const { obtenerIncidenciasAPI, obtenerIncidenciasBBDD, crearIncidencia, editarIncidencia, borrarIncidencia, obtenerIncidenciaIndividual } = require('../controladores/incidenciaControlador');
 const { obtenerUsuarios, obtenerUsuario, eliminarUsuario, actualizarDatoUsuario, crearUsuario } = require('../controladores/usuariosControlador');
 const { obtenerCamaras } = require('../controladores/camarasControlador');
 
 //***** API Open Data - API Euskalgida *****
 
-router.get('/incidencias', obtenerIncidencias);//obtiene las 20 incidencias mas recientes de la base de datos
+router.get('/incidenciasAPI', obtenerIncidenciasAPI);//obtiene las 20 incidencias mas recientes de la base de datos
 router.get('/camaras', obtenerCamaras);//obtiene camaras(por definir)
 
 
@@ -20,7 +20,7 @@ router.put('/usuarios/:email', actualizarDatoUsuario);
 router.delete('/usuarios/:email', eliminarUsuario);//borra usuario
 
 
-router.get('/incidencia', obtenerIncidencia);//obtiene la incidencia desde la BBDD
+router.get('/incidencia', obtenerIncidenciasBBDD);//obtiene la incidencia desde la BBDD
 router.get('/incidencia/:idIncidencia', obtenerIncidenciaIndividual);//obtiene la incidencia desde la BBDD
 
 router.post('/incidencia', crearIncidencia);//crear una nueva incidencia 

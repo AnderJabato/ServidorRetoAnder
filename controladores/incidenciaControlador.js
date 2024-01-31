@@ -4,7 +4,7 @@ const connection = require('../config/bbdd')
 
 
 // Ruta para obtener incidencias de la API de Open Data (GET)
-const obtenerIncidencias = async (req, res) => {
+const obtenerIncidenciasAPI = async (req, res) => {
   try {
 
     
@@ -28,10 +28,10 @@ const obtenerIncidencias = async (req, res) => {
   }
 }
 
-const obtenerIncidencia = async (req, res) => {
+const obtenerIncidenciasBBDD = async (req, res) => {
   // Realiza la consulta en la base de datos
   const query = `
-    SELECT * FROM Incidencia`;
+    SELECT * FROM Incidencias`;
 
   // Ejecuta la consulta
   connection.query(query, (err, result) => {
@@ -74,10 +74,10 @@ const obtenerIncidenciaIndividual = async (req, res) => {
 const crearIncidencia = async (req, res) => {
   // Obtén los datos de la nueva incidencia desde el cuerpo de la solicitud
   const nuevaIncidencia = req.body;
-
+   console.log(nuevaIncidencia)
   // Realiza la inserción en la base de datos
   const query = `
-    INSERT INTO Incidencia (
+    INSERT INTO Incidencias (
         idIncidencia, nombreIncidencia, tipoIncidencia, causa, descripcionIncidencia,
         fechaInicio, fechaFin, regionAutonoma, provincia, ciudad,
         direccion, carretera, registroVehiculo, idFuente, nivelIncidencia,
@@ -192,8 +192,8 @@ const borrarIncidencia = async (req, res) => {
 };
 
 module.exports = {
-  obtenerIncidencias,
-  obtenerIncidencia,
+  obtenerIncidenciasAPI,
+  obtenerIncidenciasBBDD,
   obtenerIncidenciaIndividual,
   crearIncidencia,
   editarIncidencia,

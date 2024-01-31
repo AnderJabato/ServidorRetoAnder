@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require("cors")
 const app = express()
 const port = 3002
 const router = require('./rutas/rutas')
@@ -6,6 +7,13 @@ require('dotenv').config()
 const connection = require('./config/bbdd')
 
 // Configuraciones básicas
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use('/api', router)
